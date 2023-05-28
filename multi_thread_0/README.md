@@ -1,3 +1,11 @@
+### cargo watch + tests
+Отслеживать изменения и при сохранении запускать тесты.
+```console
+cargo install cargo-watch
+cd app
+cargo watch -q -c -w src/ -x 'run -- --test-threads=1 --nocapture'
+```
+
 Написать программу, которая считывает список 
 URL-адресов из текстового файла и загружает 
 содержимое каждого адреса в отдельный файл на 
