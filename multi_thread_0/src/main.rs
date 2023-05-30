@@ -1,4 +1,4 @@
-use std::{fs, io::Write};
+use std::{fs};
 use reqwest;
 use reqwest::Error;
 // use std::io::Error as io_error;
@@ -21,7 +21,7 @@ async fn main() -> Result<(), Error> {
         .text()
         .await?;
     println!("{:?}", content);
-    let path = url.replace('.', "_");
+    let _path = url.replace('.', "_");
     // let mut file = fs::File::create(&path)?;
     // file.write_all(buf)
     Ok(())
