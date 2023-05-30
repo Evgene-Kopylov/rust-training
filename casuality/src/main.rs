@@ -14,7 +14,7 @@ fn main() {
     let mut all_combinations = Vec::new();
     for c in &letters {
         for n in &numbers {
-            all_combinations.push(format!("{}{}", c, n));
+            all_combinations.push((c, n));
         }
     }
     println!("all combinations = {:?}", all_combinations);
@@ -22,5 +22,17 @@ fn main() {
     all_combinations.shuffle(&mut rand::thread_rng());
     println!("shuffle = {:?}", all_combinations);
     
-
+    // сложить пасьянс
+    let mut res = all_combinations.clone();
+    for _ in 0..all_combinations.len() {
+        for i in 2..res.len() {
+            if res[i].0 == res[i-2].0
+            || res[i].1 == res[i-2].1 {
+                println!("{:?}", res[i]);
+                res.remove(i);
+                break;
+            }
+        }
+    }
+    print!("сложенно {:?}", res);
 }
