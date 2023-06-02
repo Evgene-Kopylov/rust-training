@@ -12,23 +12,35 @@ async fn main() -> Result<(), Error> {
     // разбить строку по символу переноса
     let urls: Vec<&str> = content.lines().collect();
     println!("{:?}", urls);
+    
+    for i in 0..urls.len() {
+        let url = urls[i];
+        let content = download_url(url).await?;
+        let file_name = format!("{i}.html");
 
-    let url = urls[0];
+        // запись в файл
+        match write_all(content, file_name.clone()) {
+            Err(e) => println!("{:?}", e),
+            _ => ()
+        }
+        println!("{}", file_name);
+    }
+    
+    // for i in 0..urls.len() {
+    //     fs::remove_file(format!("{i}.html"));
+    // }
+
+    Ok(())
+}
+
+
+async fn download_url(url: &str) -> Result<String, reqwest::Error> {
     let content = reqwest::get(url)
         .await?
         .text()
         .await?;
-    let file_name = "1.html".to_string();
-
-    // запись в файл
-    match write_all(content, file_name) {
-        Err(e) => println!("{:?}", e),
-        _ => ()
-    }
-    
-    Ok(())
+    Ok(content)
 }
-
 
 fn write_all(content: String, file_name: String) -> std::io::Result<()> {
     let mut file = fs::File::create(file_name)?;
