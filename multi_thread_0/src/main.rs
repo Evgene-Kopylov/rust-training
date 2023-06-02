@@ -1,8 +1,7 @@
 use std::{fs};
 use reqwest;
 use reqwest::Error;
-// use std::io::Error as io_error;
-
+use std::io::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -20,9 +19,20 @@ async fn main() -> Result<(), Error> {
         .await?
         .text()
         .await?;
-    println!("{:?}", content);
-    let _path = url.replace('.', "_");
-    // let mut file = fs::File::create(&path)?;
-    // file.write_all(buf)
+    // println!("{:?}", content);
+    let file_name = "1.html".to_string();
+    match write_all(content, file_name) {
+        Err(e) => println!("{:?}", e),
+        _ => ()
+    }
+    
+    Ok(())
+}
+
+
+fn write_all(content: String, file_name: String) -> std::io::Result<()> {
+    let mut file = fs::File::create(file_name)?;
+    file.write_all(content.as_bytes())?;
+    // println!("123");
     Ok(())
 }
