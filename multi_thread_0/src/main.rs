@@ -25,10 +25,6 @@ async fn main() -> Result<(), Error> {
         }
         println!("{}", file_name);
     }
-    
-    // for i in 0..urls.len() {
-    //     fs::remove_file(format!("{i}.html"));
-    // }
 
     Ok(())
 }
