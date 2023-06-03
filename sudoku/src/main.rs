@@ -32,8 +32,33 @@ fn valid_solution(sudoku: &[[u8;9]; 9]) -> bool {
         }
     }
 
-    // for
+    if !check_cube(sudoku, (0, 2), (0, 2))
+    || !check_cube(sudoku, (0, 2), (3, 5))
+    || !check_cube(sudoku, (0, 2), (6, 8))
+    || !check_cube(sudoku, (3, 5), (0, 2))
+    || !check_cube(sudoku, (3, 5), (3, 5))
+    || !check_cube(sudoku, (3, 5), (6, 8))
+    || !check_cube(sudoku, (6, 8), (0, 2))
+    || !check_cube(sudoku, (6, 8), (3, 5))
+    || !check_cube(sudoku, (6, 8), (6, 8)) {
+        return false;
+    }
 
+    
+    true
+}
+
+
+fn check_cube(sudoku: &[[u8;9]; 9], row: (usize, usize), line: (usize, usize)) -> bool {
+    let mut cube = Vec::new();
+    for i in row.0..=row.1 {
+        for j in line.0..=line.1 {
+            cube.push(sudoku[i][j]);
+        }
+    }
+    if cube.into_iter().collect::<HashSet<u8>>().len() != 9 {
+        return false;
+    }
     true
 }
 
