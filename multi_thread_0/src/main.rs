@@ -16,7 +16,7 @@ async fn main() -> Result<(), Error> {
     for i in 0..urls.len() {
         let url = urls[i];
         let content = download_url(url).await?;
-        let file_name = format!("{i}.html");
+        let file_name = format!("target/{i}.html");
 
         // запись в файл
         match write_all(content, file_name.clone()) {
