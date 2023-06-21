@@ -26,6 +26,7 @@ use reqwest::Url;
 async fn main() {
     println!("-=-=-=--=- Отдельные варианты -=-=-=-=-");
     single_task().await.unwrap();
+    few_tasks().await;
 }
 
 async fn single_task() -> Result<(), Box<dyn Error>> {
@@ -34,4 +35,27 @@ async fn single_task() -> Result<(), Box<dyn Error>> {
     let _response = reqwest::get(url).await?;    
     println!("single_task After sleep");
     Ok(())
+}
+
+
+async fn few_tasks() {
+    let task1 = async {
+        println!("few_tasks 1 START");
+        let url = Url::parse("https://www.github.com/").unwrap();
+        let response = reqwest::get(url).await.unwrap();    
+        println!("few_tasks 1 FIN");
+        response
+    };
+
+    let task2 = async {
+        println!("few_tasks 2 START");
+        let url = Url::parse("https://www.wikipedia.org/").unwrap();
+        let response = reqwest::get(url).await.unwrap();    
+        println!("few_tasks 2 FIN");
+        response
+    };
+
+    let (res1, res2) = tokio::join!(task1, task2);
+
+    println!("{:?},  {:?}", res1.status(), res2.status());
 }
