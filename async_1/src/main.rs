@@ -4,10 +4,12 @@ use tokio::task;
 
 #[tokio::main]
 async fn main() {
-    println!("-=-=-=--=- Отдельные варианты -=-=-=-=-");
-    single_task().await.unwrap();
-    few_tasks().await;
-    from_list().await;
+    // println!("-=-=-=--=- Отдельные варианты -=-=-=-=-");
+    // single_task().await.unwrap();
+    // few_tasks().await;
+    // from_list().await;
+    println!("-=-=-=--=- Все вместе -=-=-=-=-");
+    tokio::join!(single_task(), few_tasks(), from_list());
 }
 
 async fn single_task() -> Result<(), Box<dyn Error>> {
