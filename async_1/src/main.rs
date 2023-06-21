@@ -46,7 +46,7 @@ async fn from_list() {
         "https://www.github.com/",
         "https://www.wikipedia.org/",
         "https://www.youtube.com/",
-        "https://www.stackoverflow.com/"
+        "https://www.stackoverflow.com/",
     ];
 
     let mut tasks = Vec::new();
@@ -63,5 +63,4 @@ async fn from_list() {
     for task in tasks {
         task.await.unwrap();
     }
-
 }
