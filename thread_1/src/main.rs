@@ -1,4 +1,6 @@
+use std::io::Write;
 use std::thread;
+use std::fs::File;
 
 fn main() {
     let urls = [
@@ -23,5 +25,13 @@ fn single_thread(url: String) {
 
     let response = hand.join().unwrap();
     println!("status code: {:?}", response.status());
-    println!("text len: {:?}", response.text().unwrap().len());
+    let text = response.text().unwrap();
+    println!("text len: {:?}", text.len());
+    let file_name = "target/1.html".to_string();
+    write_all(text, file_name);
+}
+
+fn write_all(content: String, file_name: String) {
+    let mut file = File::create(file_name).unwrap();
+    file.write_all(content.as_bytes()).unwrap();
 }
