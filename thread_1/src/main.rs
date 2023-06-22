@@ -1,7 +1,7 @@
-use std::io::Write;
-use std::thread;
 use std::fs::File;
 use std::io;
+use std::io::Write;
+use std::thread;
 
 fn main() {
     let urls = [
@@ -15,9 +15,8 @@ fn main() {
     single_thread(urls[0].to_string());
 }
 
-
 /// Выполнение задачи в единственном потоке. Используя `std::thread`
-/// 
+///
 /// `url` - адрес страници запроса
 fn single_thread(url: String) {
     let hand = thread::spawn(move || {
@@ -37,9 +36,9 @@ fn single_thread(url: String) {
 }
 
 /// Запись контента в файл
-/// 
+///
 /// `content` - текст
-/// 
+///
 /// `file_name` - имя файла, включая относительный путь
 fn write_all(content: String, file_name: String) -> Result<(), io::Error> {
     let mut file = File::create(file_name)?;
