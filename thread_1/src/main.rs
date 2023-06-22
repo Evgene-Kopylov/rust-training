@@ -36,7 +36,7 @@ fn single_thread(url: String) {
 }
 
 /// Запись контента в файл
-/// ## Аргументы 
+/// ## Аргументы
 /// * `content` - текст
 /// * `file_name` - имя файла, включая относительный путь
 fn write_all(content: String, file_name: String) -> Result<(), io::Error> {
