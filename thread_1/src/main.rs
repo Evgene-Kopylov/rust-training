@@ -1,15 +1,24 @@
 use std::{thread, time};
 
 fn main() {
-    single_thread();
+    let urls = [
+        "https://www.google.com/",
+        "https://www.github.com/",
+        "https://www.wikipedia.org/",
+        "https://www.youtube.com/",
+        "https://www.stackoverflow.com/",
+    ];
+
+    single_thread(urls[0].to_string());
 }
 
-fn single_thread() {
+fn single_thread(url: String) {
     let hand = thread::spawn(move || {
         println!("single_thread START");
-        thread::sleep(time::Duration::from_secs(2));
+        let response = reqwest::blocking::get(&url).unwrap();
+        println!("{} {}", response.status(), &url);
         println!("single_thread END");
-        100
+        response.status()
     });
 
     let val = hand.join().unwrap();
