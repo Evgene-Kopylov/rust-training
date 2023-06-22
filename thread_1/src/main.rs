@@ -1,4 +1,4 @@
-use std::{thread, time};
+use std::thread;
 
 fn main() {
     let urls = [
@@ -18,9 +18,10 @@ fn single_thread(url: String) {
         let response = reqwest::blocking::get(&url).unwrap();
         println!("{} {}", response.status(), &url);
         println!("single_thread END");
-        response.status()
+        response
     });
 
-    let val = hand.join().unwrap();
-    println!("val: {:?}", val);
+    let response = hand.join().unwrap();
+    println!("status code: {:?}", response.status());
+    println!("text len: {:?}", response.text().unwrap().len());
 }
