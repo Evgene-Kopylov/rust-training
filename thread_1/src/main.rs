@@ -15,10 +15,13 @@ fn main() {
     single_thread(urls[0].to_string());
 }
 
-/// Выполнение задачи в единственном потоке. Используя `std::thread`
-/// ## Аргументы
-/// `url` - адрес страници запроса
+/// Функция загрузки контента из одной ссылки в однопоточном режиме.
+///
+/// # Аргументы
+///
+/// * `url` - ссылка для загрузки.
 fn single_thread(url: String) {
+    // создание нового потока
     let hand = thread::spawn(move || {
         println!("single_thread START");
         let response = reqwest::blocking::get(&url).unwrap();
@@ -27,20 +30,35 @@ fn single_thread(url: String) {
         response
     });
 
+    // ожидание завершения потока и получение результата
     let response = hand.join().unwrap();
+
+    // вывод статуса ответа
     println!("status code: {:?}", response.status());
+
+    // получение текста ответа
     let text = response.text().unwrap();
-    println!("text len: {:?}", text.len());
+
+    // задание имени файла для сохранения ответа
     let file_name = "target/1.html".to_string();
+
+    // запись ответа в файл
     write_all(text, file_name).unwrap();
 }
 
-/// Запись контента в файл
-/// ## Аргументы
-/// * `content` - текст
-/// * `file_name` - имя файла, включая относительный путь
+/// Функция записи контента в файл.
+///
+/// # Аргументы
+///
+/// * `content` - содержимое файла.
+/// * `file_name` - имя файла для сохранения.
 fn write_all(content: String, file_name: String) -> Result<(), io::Error> {
+    // создание нового файла
     let mut file = File::create(file_name)?;
+
+    // запись содержимого в файл
     file.write_all(content.as_bytes())?;
+
+    // возвращение значения Ok, если операция завершилась успешно
     Ok(())
 }
