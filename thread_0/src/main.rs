@@ -1,6 +1,5 @@
 use std::{thread, time};
 
-
 fn main() {
     // single_thread();
     multy_threads();
