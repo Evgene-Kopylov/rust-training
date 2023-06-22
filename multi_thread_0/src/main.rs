@@ -1,36 +1,39 @@
 use std::{fs};
-use reqwest;
 use reqwest::Error;
 use std::io::prelude::*;
+use std::thread;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    // чтение содержимого файла в строку
-    let content = fs::read_to_string("urls.txt")
-        .expect("Failed to read");
-
-    // разбить строку по символу переноса
-    let urls: Vec<&str> = content.lines().collect();
-    println!("{:?}", urls);
+    let urls = [
+        "https://www.google.com/",
+        "https://www.github.com/",
+        "https://www.wikipedia.org/",
+        "https://www.youtube.com/",
+        "https://www.stackoverflow.com/",
+    ];
     
-    for i in 0..urls.len() {
-        let url = urls[i];
-        let content = download_url(url).await?;
-        let file_name = format!("target/{i}.html");
-
-        // запись в файл
-        match write_all(content, file_name.clone()) {
-            Err(e) => println!("{:?}", e),
-            _ => ()
-        }
-        println!("{}", file_name);
-    }
+    single_thread(urls[0].to_owned())?;
 
     Ok(())
 }
 
 
-async fn download_url(url: &str) -> Result<String, reqwest::Error> {
+fn single_thread(url: String) -> Result<(), Error> {
+    let hand = thread::spawn(move || {
+        println!("single_thread Перед");
+        let response = reqwest::blocking::get(&url).unwrap();
+        println!("{} {}", response.status(), &url);
+        println!("single_thread После");
+        response
+    });
+    
+    let response = hand.join().unwrap();
+    Ok(())
+}
+
+
+async fn download_url(url: &str) -> Result<String, Error> {
     let content = reqwest::get(url)
         .await?
         .text()
