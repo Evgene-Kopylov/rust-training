@@ -15,6 +15,10 @@ fn main() {
     single_thread(urls[0].to_string());
 }
 
+
+/// Выполнение задачи в единственном потоке. Используя `std::thread`
+/// 
+/// `url` - адрес страници запроса
 fn single_thread(url: String) {
     let hand = thread::spawn(move || {
         println!("single_thread START");
@@ -32,6 +36,11 @@ fn single_thread(url: String) {
     write_all(text, file_name).unwrap();
 }
 
+/// Запись контента в файл
+/// 
+/// `content` - текст
+/// 
+/// `file_name` - имя файла, включая относительный путь
 fn write_all(content: String, file_name: String) -> Result<(), io::Error> {
     let mut file = File::create(file_name)?;
     file.write_all(content.as_bytes())?;
