@@ -36,7 +36,7 @@ fn multi_thread(urls: Vec<String>) {
         let response = hand.join().unwrap();
         let content = response.text().unwrap();
         let file_name = format!("target/{i}.html");
-        write_all(content, file_name);
+        write_all(content, file_name).unwrap();
     }
 }
 
