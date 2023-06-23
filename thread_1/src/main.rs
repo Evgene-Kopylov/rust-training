@@ -12,15 +12,38 @@ fn main() {
         "https://www.stackoverflow.com/",
     ];
 
-    single_thread(urls[0].to_string());
+    // single_thread(urls[0].to_string());
+    multi_thread(urls.to_vec());
 }
+
+
+fn multi_thread(urls: Vec<&str>) {
+    let mut hands = Vec::new();
+    for url in urls {
+        let url = url.to_string();
+        let hand = thread::spawn(move || {
+            println!("multi_thread START");
+            let response = reqwest::blocking::get(&url).unwrap();
+            println!("{} {}", response.status(), &url);
+            println!("multi_thread END");
+            response
+        });
+        hands.push(hand);
+    }
+
+    for hand in hands {
+        hand.join().unwrap();     
+    }
+
+}
+
 
 /// Функция загрузки контента из одной ссылки в однопоточном режиме.
 ///
-/// # Аргументы
+/// ## Аргументы
 ///
 /// * `url` - ссылка для загрузки.
-fn single_thread(url: String) {
+fn _single_thread(url: String) {
     // создание нового потока
     let hand = thread::spawn(move || {
         println!("single_thread START");
@@ -32,8 +55,6 @@ fn single_thread(url: String) {
 
     // ожидание завершения потока и получение результата
     let response = hand.join().unwrap();
-
-    // вывод статуса ответа
     println!("status code: {:?}", response.status());
 
     // получение текста ответа
@@ -48,7 +69,7 @@ fn single_thread(url: String) {
 
 /// Функция записи контента в файл.
 ///
-/// # Аргументы
+/// ## Аргументы
 ///
 /// * `content` - содержимое файла.
 /// * `file_name` - имя файла для сохранения.
@@ -59,6 +80,5 @@ fn write_all(content: String, file_name: String) -> Result<(), io::Error> {
     // запись содержимого в файл
     file.write_all(content.as_bytes())?;
 
-    // возвращение значения Ok, если операция завершилась успешно
     Ok(())
 }
