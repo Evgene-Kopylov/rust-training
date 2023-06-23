@@ -13,14 +13,15 @@ fn main() {
     ];
 
     // single_thread(urls[0].to_string());
-    multi_thread(urls.to_vec());
+    multi_thread(urls.iter().map(|url| url.to_string()).collect());
 }
 
-
-fn multi_thread(urls: Vec<&str>) {
+/// Выполнение задачи в нескольео потоков. Запись в файлы происходит во втором цикле.
+///
+/// * `urls` - список адресов парсинга.
+fn multi_thread(urls: Vec<String>) {
     let mut hands = Vec::new();
     for url in urls {
-        let url = url.to_string();
         let hand = thread::spawn(move || {
             println!("multi_thread START");
             let response = reqwest::blocking::get(&url).unwrap();
@@ -31,12 +32,13 @@ fn multi_thread(urls: Vec<&str>) {
         hands.push(hand);
     }
 
-    for hand in hands {
-        hand.join().unwrap();     
+    for (i, hand) in hands.into_iter().enumerate() {
+        let response = hand.join().unwrap();
+        let content = response.text().unwrap();
+        let file_name = format!("target/{i}.html");
+        write_all(content, file_name);
     }
-
 }
-
 
 /// Функция загрузки контента из одной ссылки в однопоточном режиме.
 ///
