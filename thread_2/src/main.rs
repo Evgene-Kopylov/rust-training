@@ -5,7 +5,6 @@ fn main() {
     threads_with_shared_mutex();
 }
 
-
 fn threads_with_shared_mutex() {
     let target = vec![];
     let counter = Arc::new(Mutex::new(target));
