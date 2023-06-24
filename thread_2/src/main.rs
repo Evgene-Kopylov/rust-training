@@ -26,3 +26,4 @@ fn threads_with_shared_mutex() {
 
     println!("Result: {:?}", *counter.lock().unwrap());
 }
+
