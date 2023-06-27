@@ -1,10 +1,12 @@
+#![allow(unused)]  // FIXME
+
 use std::sync::mpsc;
 use std::sync::{Arc, Mutex};
 use std::thread;
 
 fn main() {
-    // threads_with_shared_mutex();
-    threads_with_channal()
+    threads_with_shared_mutex();
+    // threads_with_channal()
 }
 
 fn threads_with_channal() {
@@ -22,7 +24,7 @@ fn threads_with_channal() {
     }
 }
 
-fn _threads_with_shared_mutex() {
+fn threads_with_shared_mutex() {
     let target = vec![];
     let counter = Arc::new(Mutex::new(target));
     let mut handles = vec![];
